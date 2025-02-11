@@ -2,6 +2,7 @@
 """
 This file provides the definition of the convolutional heads used to predict masks, as well as the losses
 """
+import contextlib
 import io
 from collections import defaultdict
 from typing import List, Optional
@@ -9,16 +10,14 @@ from typing import List, Optional
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch import Tensor
 from PIL import Image
+from torch import Tensor
 
-import util.box_ops as box_ops
-from util.misc import NestedTensor, interpolate, nested_tensor_from_tensor_list
+from ..util import box_ops as box_ops
+from ..util.misc import NestedTensor, interpolate, nested_tensor_from_tensor_list
 
-try:
+with contextlib.suppress(ImportError):
     from panopticapi.utils import id2rgb, rgb2id
-except ImportError:
-    pass
 
 
 class DETRsegm(nn.Module):
